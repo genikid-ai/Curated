@@ -24,6 +24,40 @@
             padding: 40px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             border: 2px solid #E8F4F8;
+            position: relative; /* For positioning the fullscreen button */
+        }
+
+        .fullscreen-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border: 2px solid #D6E7F0;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease-in-out;
+            z-index: 1001;
+        }
+
+        .fullscreen-btn:hover {
+            transform: scale(1.1);
+            border-color: #9BC5D9;
+        }
+
+        .fullscreen-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #6B9BD1;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
         }
         
         .game-header {
@@ -626,6 +660,10 @@
 </head>
 <body>
     <div class="game-container">
+        <button id="fullscreenBtn" class="fullscreen-btn" title="全螢幕切換">
+            <svg id="enterFsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            <svg id="exitFsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display: none;"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>
+        </button>
         <!-- 座號選擇畫面 -->
         <div class="seat-selection-screen" id="seatSelectionScreen">
             <h1 class="seat-selection-title">👥 請選擇學生座號</h1>
@@ -1229,9 +1267,46 @@
                 loadingOverlay.style.display = 'none';
             });
         }
+        
+        function toggleFullScreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                const el = document.documentElement;
+                if (el.requestFullscreen) {
+                    el.requestFullscreen();
+                } else if (el.webkitRequestFullscreen) { /* Safari */
+                    el.webkitRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { /* Safari */
+                    document.webkitExitFullscreen();
+                }
+            }
+        }
+
+        function updateFullscreenIcon() {
+            const enterIcon = document.getElementById('enterFsIcon');
+            const exitIcon = document.getElementById('exitFsIcon');
+            if (document.fullscreenElement || document.webkitFullscreenElement) {
+                enterIcon.style.display = 'none';
+                exitIcon.style.display = 'block';
+            } else {
+                enterIcon.style.display = 'block';
+                exitIcon.style.display = 'none';
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             initSeatSelection();
+            
+            // Disable right-click context menu
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            fullscreenBtn.addEventListener('click', toggleFullScreen);
+            document.addEventListener('fullscreenchange', updateFullscreenIcon);
+            document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
         });
     </script>
 </body>
