@@ -14,11 +14,16 @@
             font-family: 'Microsoft JhengHei', Arial, sans-serif;
             background: linear-gradient(135deg, #F8F9FA 0%, #E8F4F8 50%, #F0F8F0 100%);
             min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
         }
 
         .game-container {
             max-width: 1200px;
-            margin: 0 auto;
+            width: 95%; /* Make container slightly responsive */
+            margin: 20px auto; /* Add some vertical margin too */
             background: #FEFEFE;
             border-radius: 25px;
             padding: 40px;
@@ -447,6 +452,7 @@
             margin-top: 40px;
             padding-top: 30px;
             border-top: 2px solid #E8F4F8;
+            text-align: center; /* Center buttons within this div */
         }
 
         .teacher-button {
@@ -460,7 +466,7 @@
             transition: all 0.3s ease;
             font-weight: 500;
             box-shadow: 0 4px 15px rgba(107, 155, 209, 0.2);
-            margin: 0 10px;
+            margin: 5px 10px; /* Add vertical margin for wrapping */
         }
 
         .teacher-button:hover {
@@ -469,11 +475,12 @@
             background: linear-gradient(45deg, #7AABCD, #5A8BC4);
         }
 
+        /* --- Analysis Report Styles --- */
         .analysis-screen {
             display: none;
             text-align: center;
             padding: 40px;
-            background: #F8FCFF;
+            background: #F0F4F8; /* Light background for the whole screen */
             border-radius: 25px;
             margin: 20px 0;
         }
@@ -485,59 +492,121 @@
             font-weight: 600;
         }
 
-        .analysis-content {
+        .analysis-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between cards */
             text-align: left;
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .analysis-card {
             background: white;
-            padding: 30px;
+            padding: 25px 30px;
             border-radius: 15px;
-            margin: 20px 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid #E0E8EF;
         }
 
-        .analysis-section {
-            margin-bottom: 25px;
-        }
-
-        .analysis-section h3 {
+        .analysis-card h3 {
             color: #6B9BD1;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-size: 1.4rem; /* Slightly larger title */
+            margin-top: 0;
+            margin-bottom: 15px;
             border-bottom: 2px solid #E8F4F8;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center; /* Align icon and text */
         }
-        /* Style for enlarged status text */
-        .status-text-large {
-            font-size: 2.5rem; /* Adjust size as needed */
-            font-weight: bold;
-            display: block; /* Make it take its own line */
-            margin-top: 8px; /* Add some space above */
-            text-align: center; /* Center the text */
+        .analysis-card h3 svg { /* Style for potential icons in h3 */
+            margin-right: 8px;
         }
-        .status-excellent { color: #28a745; } /* Green */
-        .status-good { color: #17a2b8; }      /* Blue-ish */
-        .status-needs-improvement { color: #ffc107; } /* Orange/Yellow */
 
-
-        /* Styles for missed word list */
-        .missed-word-list {
-            list-style: none;
-            padding-left: 0;
-            display: flex; /* Use flexbox for layout */
-            flex-wrap: wrap; /* Allow items to wrap */
-            gap: 10px; /* Space between items */
-            justify-content: center; /* Center items */
+        .analysis-card p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: #555;
         }
-        .missed-word-item {
-            background: #FFF8E1;
-            padding: 10px 20px; /* Adjust padding */
-            border-radius: 20px; /* Make it more rounded like the example */
-            border: 2px solid #FFD54F; /* Add a border like the example */
-            font-size: 1.1rem; /* Adjust font size if needed */
-            font-weight: 500;
-            color: #8D6E63; /* Adjust text color if needed */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        .analysis-card p strong {
+             color: #444;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 20px;
+            justify-content: space-around; /* Distribute space */
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: #F8FCFF;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #E0E8EF;
             text-align: center;
+            flex: 1; /* Make cards share space */
+            min-width: 180px; /* Minimum width before wrapping */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
+
+        .stat-card-title {
+            font-size: 1rem;
+            color: #6B9BD1;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-card-value {
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .error-words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Responsive grid */
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .error-word-item {
+            background: #FFF8E1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #FFECB3;
+            text-align: center;
+            font-size: 1rem;
+            color: #8D6E63;
+            font-weight: 500;
+        }
+
+        .suggestion-list {
+            list-style: none; /* Remove default bullets */
+            padding-left: 0;
+            margin-top: 15px;
+        }
+
+        .suggestion-list li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+            padding-left: 25px; /* Space for custom bullet */
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-list li::before {
+            content: '💡'; /* Custom bullet */
+            position: absolute;
+            left: 0;
+            top: 1px;
+            color: #FFB74D;
+        }
+
+        /* --- End Analysis Report Styles --- */
 
 
         .report-header { /* For the temporary header during export */
@@ -593,7 +662,17 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
+            /* Ensure it appears even if other elements have high z-index */
+            visibility: hidden; /* Hidden by default */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s;
         }
+        .modal-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.3s ease, visibility 0s linear 0s;
+        }
+
         .modal-content {
             background: white;
             padding: 30px 40px;
@@ -602,7 +681,16 @@
             box-shadow: 0 5px 25px rgba(0,0,0,0.2);
             width: 90%;
             max-width: 500px;
+            transform: scale(0.9); /* Start slightly smaller */
+             opacity: 0; /* Start invisible */
+             transition: transform 0.3s ease, opacity 0.3s ease;
         }
+         .modal-overlay.visible .modal-content {
+             transform: scale(1); /* Scale to normal size */
+             opacity: 1; /* Fade in */
+         }
+
+
         .modal-content h2 {
             color: #6B9BD1;
             margin-top: 0;
@@ -629,54 +717,217 @@
             background: linear-gradient(45deg, #999, #777);
         }
 
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
+            body {
+                padding: 10px; /* Reduce padding on small screens */
+                 align-items: flex-start; /* Align container to top on mobile */
+            }
+            .game-container {
+                padding: 20px;
+                width: 100%; /* Use full width */
+                margin: 10px 0; /* Adjust margin */
+            }
             .game-area {
                 flex-direction: column;
                 align-items: center;
                 max-width: 100%;
+                gap: 20px; /* Reduce gap */
             }
 
             .word-section {
                 flex: none;
+                width: 100%;
+                 max-width: 300px; /* Limit width */
             }
 
             .word-card {
-                width: 280px;
-                height: 400px;
+                width: 100%; /* Full width within section */
+                height: 0; /* Reset height */
+                 padding-bottom: 142%; /* Maintain aspect ratio (500/350) */
+                 position: relative;
+                margin-bottom: 20px; /* Add space below */
             }
+             .word-card img { /* Adjust image position for aspect ratio */
+                position: absolute;
+                top: 5%;
+                left: 5%;
+                width: 90%;
+                height: 90%;
+             }
+
+
+             .next-button {
+                width: 80%; /* Make button wider */
+             }
+
 
             .options-section {
                 flex: none;
-                width: 320px;
+                width: 100%; /* Full width */
+                max-width: 350px; /* Limit width slightly more */
             }
 
             .options-grid {
                 grid-template-columns: 1fr 1fr;
-                gap: 15px;
+                gap: 10px; /* Reduce gap */
+                width: 100%; /* Ensure grid uses full section width */
             }
 
             .option-card {
-                width: 150px;
-                height: 210px;
+                width: 100%; /* Make cards fill grid cells */
+                height: 0; /* Reset height */
+                padding-bottom: 127%; /* Maintain aspect ratio (280/220) */
+                position: relative;
+                min-height: unset; /* Remove min-height */
             }
+            .option-card img { /* Adjust image position for aspect ratio */
+                position: absolute;
+                top: 5%;
+                left: 5%;
+                width: 90%;
+                height: 90%;
+            }
+             .option-card.wrong::after, .option-card.selected-wrong::after {
+                 /* Adjust cross position/size on smaller cards */
+                  font-size: 24px;
+                  width: 30px;
+                  height: 30px;
+                  top: 5px;
+                  right: 5px;
+             }
+              .option-card.selected-wrong::after {
+                  /* Keep large cross centered for selected wrong */
+                 font-size: 60px;
+                 top: 50%;
+                 left: 50%;
+                 transform: translate(-50%, -50%);
+
+              }
+
 
             .seat-grid {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* More responsive seats */
                 gap: 10px;
+                max-width: 100%;
             }
 
             .seat-button {
-                width: 60px;
-                height: 60px;
+                width: 100%; /* Full width of grid cell */
+                height: 0;
+                padding-bottom: 100%; /* Make it square */
+                position: relative;
                 font-size: 1.2rem;
             }
-            .status-text-large {
-                 font-size: 2rem; /* Slightly smaller on mobile */
+             .seat-button span { /* Center number in square */
+                 position: absolute;
+                 top: 50%;
+                 left: 50%;
+                 transform: translate(-50%, -50%);
+             }
+
+
+            .analysis-title {
+                font-size: 2rem;
             }
-            .missed-word-item {
-                 padding: 8px 15px;
+            .analysis-content-wrapper {
+                 padding: 0 10px; /* Add slight padding on mobile */
+            }
+            .analysis-card {
+                padding: 20px;
+            }
+             .analysis-card h3 {
+                font-size: 1.2rem;
+             }
+             .analysis-card p, .suggestion-list li {
                  font-size: 1rem;
+             }
+
+            .stats-container {
+                flex-direction: column; /* Stack stats cards */
+                gap: 15px;
             }
+            .stat-card {
+                min-width: unset; /* Remove min-width */
+                width: 100%; /* Full width */
+            }
+
+            .modal-content {
+                width: 90%;
+                padding: 20px;
+            }
+             .modal-buttons {
+                 gap: 10px;
+             }
+             .teacher-button, .restart-button, .next-button {
+                 padding: 12px 30px;
+                 font-size: 1.1rem;
+             }
+             .fullscreen-btn {
+                 top: 15px;
+                 right: 15px;
+                 width: 40px;
+                 height: 40px;
+             }
+             .fullscreen-btn svg {
+                width: 20px;
+                height: 20px;
+             }
+             .progress-dot {
+                 width: 35px;
+                 height: 35px;
+                 font-size: 28px;
+             }
+             .game-header {
+                 margin-bottom: 20px;
+             }
+
+        }
+
+        @media (max-width: 480px) {
+             .game-title {
+                 font-size: 1.8rem; /* Further reduce title size */
+             }
+             .word-card {
+                 /* Height adjusted by aspect ratio */
+                 margin-bottom: 15px;
+             }
+             .options-grid {
+                 gap: 8px; /* Further reduce gap */
+             }
+             .option-card {
+                  /* Height adjusted by aspect ratio */
+             }
+
+             .seat-grid {
+                grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Smaller seat buttons */
+                gap: 8px;
+            }
+            .seat-button {
+                 font-size: 1rem; /* Smaller font size for seats */
+            }
+
+            .teacher-button, .restart-button, .next-button {
+                 padding: 10px 25px;
+                 font-size: 1rem;
+             }
+             .analysis-title {
+                 font-size: 1.8rem;
+             }
+              .analysis-card {
+                padding: 15px;
+             }
+             .analysis-card h3 {
+                 font-size: 1.1rem;
+             }
+              .modal-content {
+                 padding: 15px 20px;
+             }
+              .modal-content h2 {
+                 font-size: 1.5rem;
+              }
+
+
         }
     </style>
 </head>
@@ -698,7 +949,7 @@
             </div>
         </div>
 
-        <!-- 遊戲畫面 -->
+        <!-- 遊戲畫面 (Initially Hidden) -->
         <div class="game-header" id="gameHeader" style="display: none;">
             <h1 class="game-title">🎯 語文闖關趣(中班)</h1>
             <div class="current-student" id="currentStudent" style="font-size: 1.3rem; color: #6B9BD1; margin-bottom: 20px;"></div>
@@ -717,7 +968,7 @@
                 <div class="word-card">
                     <img id="wordImage" class="word-image" src="" alt="語詞圖片">
                 </div>
-                <button class="next-button" id="nextButton" onclick="nextQuestion()">下一題 ➡️</button>
+                 <button class="next-button" id="nextButton" onclick="nextQuestion()">下一題 ➡️</button>
             </div>
 
             <div class="options-section">
@@ -727,30 +978,35 @@
             </div>
         </div>
 
-        <div class="completion-screen" id="completionScreen">
+        <!-- 完成畫面 (Initially Hidden) -->
+        <div class="completion-screen" id="completionScreen" style="display: none;">
             <div class="completion-title">🎉 恭喜完成！</div>
             <div class="score-display" id="scoreDisplay">你答對了 5 題中的 5 題！</div>
             <button class="restart-button" onclick="backToSeatSelection()">返回座號選擇 🔙</button>
         </div>
 
-        <!-- 全班分析畫面 -->
-        <div class="analysis-screen" id="analysisScreen">
+        <!-- 全班分析畫面 (Initially Hidden) -->
+        <div class="analysis-screen" id="analysisScreen" style="display: none;">
             <div class="analysis-title">📊 全班學習分析報告</div>
-            <div class="teacher-controls" style="border-top: none; padding-top: 0; margin-bottom: 20px;">
-                <button class="teacher-button" onclick="openExportModal()">🚀 匯出報告</button>
+             <div class="teacher-controls" style="border-top: none; padding-top: 0; margin-bottom: 20px; text-align: center;">
+                 <button class="teacher-button" onclick="openExportModal()">🚀 匯出報告</button>
+             </div>
+            <div class="analysis-content-wrapper" id="analysisContent">
+                {/* 分析內容卡片會動態生成 */}
             </div>
-            <div class="analysis-content" id="analysisContent">
-                <!-- 分析內容會動態生成 -->
-            </div>
-            <button class="teacher-button" onclick="backToSeatSelection()" style="margin-top: 20px;">返回座號選擇</button>
+             <div style="text-align: center;">
+                 <button class="teacher-button" onclick="backToSeatSelection()" style="margin-top: 20px;">返回座號選擇</button>
+             </div>
         </div>
     </div>
 
+    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
         <div class="loader"></div>
         <p style="margin-top: 20px; font-size: 1.2rem; color: #555;">正在產生報告中...</p>
     </div>
 
+    <!-- Export Modal -->
     <div id="exportModal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>匯出學習報告</h2>
@@ -765,105 +1021,25 @@
         </div>
     </div>
 
-
     <script>
         const gameData = [
-            {
-                name: '喇叭',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-01.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-01.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-01.jpg'
-            },
-            {
-                name: '趴著',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-02.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-02.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-02.jpg'
-            },
-            {
-                name: '媽媽',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-03.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-03.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-03.jpg'
-            },
-            {
-                name: '皮膚',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-04.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-04.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-04.jpg'
-            },
-            {
-                name: '刀子',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-05.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-05.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-05.jpg'
-            },
-            {
-                name: '桃子',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-06.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-06.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-06.jpg'
-            },
-            {
-                name: '小牛',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-07.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-07.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-07.jpg'
-            },
-            {
-                name: '快樂',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-08.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-08.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-08.jpg'
-            },
-            {
-                name: '唱歌',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-09.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-09.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-09.jpg'
-            },
-            {
-                name: '一棵',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-10.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-10.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-10.jpg'
-            },
-            {
-                name: '喝水',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-11.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-11.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-11.jpg'
-            },
-            {
-                name: '飛機',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-12.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-12.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-12.jpg'
-            },
-            {
-                name: '油漆',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-13.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-13.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-13.jpg'
-            },
-            {
-                name: '西瓜',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-14.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-14.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-14.jpg'
-            },
-            {
-                name: '小豬',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-15.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-15.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-15.jpg'
-            },
-            {
-                name: '出來',
-                wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-16.jpg',
-                pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-16.png',
-                phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-16.jpg'
-            }
+             // ... (gameData array remains the same as provided before) ...
+             { name: '喇叭', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-01.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-01.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-01.jpg' },
+             { name: '趴著', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-02.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-02.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-02.jpg' },
+             { name: '媽媽', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-03.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-03.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-03.jpg' },
+             { name: '皮膚', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-04.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-04.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-04.jpg' },
+             { name: '刀子', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-05.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-05.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-05.jpg' },
+             { name: '桃子', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-06.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-06.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-06.jpg' },
+             { name: '小牛', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-07.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-07.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-07.jpg' },
+             { name: '快樂', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-08.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-08.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-08.jpg' },
+             { name: '唱歌', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-09.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-09.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-09.jpg' },
+             { name: '一棵', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-10.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-10.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-10.jpg' },
+             { name: '喝水', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-11.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-11.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-11.jpg' },
+             { name: '飛機', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-12.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-12.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-12.jpg' },
+             { name: '油漆', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-13.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-13.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-13.jpg' },
+             { name: '西瓜', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-14.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-14.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-14.jpg' },
+             { name: '小豬', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-15.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-15.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-15.jpg' },
+             { name: '出來', wordImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-16.jpg', pictureImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/20250805-16.png', phoneticImage: 'https://raw.githubusercontent.com/genikid-ai/Curated/refs/heads/main/Middle-01/2025-1009-16.jpg' }
         ];
 
         let currentQuestion = 0;
@@ -872,6 +1048,7 @@
         let answered = false;
         let currentStudentSeat = null;
         let studentProgress = JSON.parse(localStorage.getItem('studentProgress') || '{}');
+        let currentAttemptCorrectness = []; // To track correctness for the current attempt
 
         function shuffleArray(array) {
             const newArray = [...array];
@@ -889,54 +1066,84 @@
             for (let i = 1; i <= 25; i++) {
                 const seatButton = document.createElement('div');
                 seatButton.className = 'seat-button';
-                seatButton.textContent = i;
+                // Add a span inside for centering content with aspect ratio method
+                const numberSpan = document.createElement('span');
+                numberSpan.textContent = i;
+                seatButton.appendChild(numberSpan);
+                seatButton.dataset.seatNumber = i; // Store number for styling or later use if needed
                 seatButton.onclick = () => selectSeat(i);
 
                 if (studentProgress[i] && studentProgress[i].completed) {
                     seatButton.classList.add('completed');
-                    seatButton.onclick = null;
+                    seatButton.onclick = null; // Disable click if completed
                 }
 
                 seatGrid.appendChild(seatButton);
             }
         }
 
+
         function selectSeat(seatNumber) {
             currentStudentSeat = seatNumber;
             document.getElementById('seatSelectionScreen').style.display = 'none';
             document.getElementById('analysisScreen').style.display = 'none';
-            document.getElementById('gameHeader').style.display = 'block';
-            document.getElementById('gameArea').style.display = 'flex';
+            document.getElementById('gameHeader').style.display = 'block'; // Should show header
+            document.getElementById('gameArea').style.display = 'flex'; // Should show game area
+            document.getElementById('completionScreen').style.display = 'none'; // Ensure completion screen is hidden
             document.getElementById('currentStudent').textContent = `學生座號：${seatNumber} 號`;
-            initGame();
+            initGame(); // Starts the game logic
         }
 
         function initGame() {
             const shuffledData = shuffleArray(gameData);
-            gameQuestions = shuffledData.slice(0, 5);
+            gameQuestions = shuffledData.slice(0, 5); // Select 5 questions for the game
 
             currentQuestion = 0;
             score = 0;
             answered = false;
+            currentAttemptCorrectness = new Array(gameQuestions.length).fill(null); // Reset correctness tracking
 
             document.getElementById('completionScreen').style.display = 'none';
             document.getElementById('nextButton').style.display = 'none';
+             // Reset dots visual state at the start of a new game
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach(dot => dot.classList.remove('completed'));
 
-            loadQuestion();
+            loadQuestion(); // Load the first question
         }
 
         function loadQuestion() {
-            answered = false;
+            if (currentQuestion >= gameQuestions.length) {
+                completeGame(); // Should not happen if logic is correct, but as a safeguard
+                return;
+            }
+
+            answered = false; // Allow answering for the new question
             const questionData = gameQuestions[currentQuestion];
 
-            updateDotProgress();
-            document.getElementById('questionCounter').textContent = `第 ${currentQuestion + 1} 題 / 5 題`;
+            updateDotProgress(); // Update the visual progress dots
+            document.getElementById('questionCounter').textContent = `第 ${currentQuestion + 1} 題 / ${gameQuestions.length} 題`;
 
-            document.getElementById('wordImage').src = questionData.wordImage;
+            // Display the main word image
+            const wordImageElement = document.getElementById('wordImage');
+             if (wordImageElement) {
+                wordImageElement.src = questionData.wordImage;
+                wordImageElement.alt = `語詞圖片：${questionData.name}`; // More descriptive alt text
+             }
 
-            generateOptions(questionData);
 
-            document.getElementById('nextButton').style.display = 'none';
+            generateOptions(questionData); // Create the answer options
+
+            document.getElementById('nextButton').style.display = 'none'; // Hide next button until answer
+
+             // Ensure options are clickable and styles are reset
+            const allOptions = document.querySelectorAll('.option-card');
+            allOptions.forEach(card => {
+                card.classList.remove('correct', 'wrong', 'selected-wrong');
+                card.style.pointerEvents = 'auto'; // Re-enable clicking
+                 card.style.opacity = '1'; // Reset opacity
+                 card.style.filter = 'none'; // Reset filter
+            });
         }
 
         function updateDotProgress() {
@@ -952,127 +1159,96 @@
 
         function generateOptions(correctData) {
             const optionsGrid = document.getElementById('optionsGrid');
-            optionsGrid.innerHTML = '';
+            optionsGrid.innerHTML = ''; // Clear previous options
 
-            const isPhoneticQuestion = currentQuestion < 2;
+            const isPhoneticQuestion = currentQuestion < 2; // First 2 questions use phonetic images
 
+            // Get 3 different options
             const otherOptions = gameData.filter(item => item.name !== correctData.name);
             const shuffledOthers = shuffleArray(otherOptions).slice(0, 3);
 
+            // Combine correct and incorrect options, then shuffle
             const options = [correctData, ...shuffledOthers];
             const shuffledOptions = shuffleArray(options);
 
-            shuffledOptions.forEach((option, index) => {
+            // Create and append option cards
+            shuffledOptions.forEach((option) => {
                 const optionCard = document.createElement('div');
                 optionCard.className = 'option-card';
-                optionCard.onclick = () => selectOption(optionCard, option.name === correctData.name, option.name); // Pass word name
+                optionCard.onclick = () => selectOption(optionCard, option.name === correctData.name);
 
                 const img = document.createElement('img');
                 img.className = 'option-image';
                 img.src = isPhoneticQuestion ? option.phoneticImage : option.pictureImage;
-                img.alt = option.name;
+                img.alt = option.name; // Use name for alt text
+                 // Add error handling for images
+                 img.onerror = () => { img.alt = '圖片載入失敗'; /* Optionally show placeholder */ };
+
 
                 optionCard.appendChild(img);
                 optionsGrid.appendChild(optionCard);
             });
         }
 
+
         function createConfetti() {
             const confettiContainer = document.querySelector('.game-container');
+             const existingConfetti = confettiContainer.querySelector('.confetti');
+             if (existingConfetti) {
+                 confettiContainer.removeChild(existingConfetti);
+             }
+
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
-            // Check if confettiContainer exists before appending
-            if (confettiContainer) {
-               confettiContainer.appendChild(confetti);
-            } else {
-               console.error("Game container not found for confetti.");
-               return; // Exit if container not found
-            }
-
+            confettiContainer.appendChild(confetti);
 
             for (let i = 0; i < 50; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 piece.style.left = Math.random() * 100 + '%';
-                piece.style.animationDelay = Math.random() * 3 + 's';
-                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                 const randomColor = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4'][Math.floor(Math.random() * 5)];
+                 piece.style.background = randomColor;
+                 if (Math.random() > 0.7) piece.style.borderRadius = '50%';
+                 if (Math.random() < 0.3) piece.style.transform = `rotate(${Math.random() * 360}deg)`;
                 confetti.appendChild(piece);
             }
 
             setTimeout(() => {
-                // Check parent again before removing
-                if (confetti.parentNode === confettiContainer) {
+                 // Check parentNode before removing, in case container changed
+                 if (confetti.parentNode === confettiContainer) {
                     confettiContainer.removeChild(confetti);
-                }
-            }, 5000);
+                 }
+            }, 4000);
         }
 
-        function selectOption(selectedCard, isCorrect, selectedWordName) { // Add selectedWordName
+        function selectOption(selectedCard, isCorrect) {
             if (answered) return;
-
             answered = true;
+            currentAttemptCorrectness[currentQuestion] = isCorrect; // Record correctness for this attempt
 
             const allOptions = document.querySelectorAll('.option-card');
-            allOptions.forEach(card => {
-                card.style.pointerEvents = 'none';
-            });
-
-             // Store result for analysis, regardless of correctness
-            if (currentStudentSeat && !studentProgress[currentStudentSeat]) {
-                 studentProgress[currentStudentSeat] = {
-                      completed: false, // Will be set true on game completion
-                      score: 0,
-                      totalQuestions: gameQuestions.length,
-                      completedAt: null,
-                      questions: [] // Initialize questions array
-                 };
-            }
-             // Make sure questions array exists
-            if (currentStudentSeat && studentProgress[currentStudentSeat] && !studentProgress[currentStudentSeat].questions) {
-                 studentProgress[currentStudentSeat].questions = [];
-            }
-             // Record the answer for this question
-             if (currentStudentSeat && studentProgress[currentStudentSeat]) {
-                  const currentWord = gameQuestions[currentQuestion].name;
-                  // Ensure we don't duplicate entries if somehow selectOption is called twice
-                  if (!studentProgress[currentStudentSeat].questions[currentQuestion]) {
-                       studentProgress[currentStudentSeat].questions[currentQuestion] = {
-                            word: currentWord,
-                            correct: isCorrect,
-                            selected: selectedWordName // Store what was selected
-                       };
-                  } else {
-                       // Update existing entry if needed (e.g., if somehow selection changes, though unlikely with current logic)
-                       studentProgress[currentStudentSeat].questions[currentQuestion].correct = isCorrect;
-                       studentProgress[currentStudentSeat].questions[currentQuestion].selected = selectedWordName;
-                  }
-            }
-
+            allOptions.forEach(card => card.style.pointerEvents = 'none');
 
             if (isCorrect) {
                 selectedCard.classList.add('correct');
                 score++;
-
                 createConfetti();
-
                 setTimeout(() => {
-                     if (currentQuestion < gameQuestions.length - 1) {
+                    if (currentQuestion < gameQuestions.length - 1) {
                         nextQuestion();
                     } else {
                         completeGame();
                     }
                 }, 1500);
-
             } else {
                 const correctData = gameQuestions[currentQuestion];
                 const isPhoneticQuestion = currentQuestion < 2;
-
                 allOptions.forEach(card => {
                     const img = card.querySelector('.option-image');
-                    const imgSrc = img ? img.src : null; // Check if img exists
                     const correctSrc = isPhoneticQuestion ? correctData.phoneticImage : correctData.pictureImage;
-
-                    if (imgSrc === correctSrc) {
+                    if (img && img.src === correctSrc) {
                         card.classList.add('correct');
                     } else if (card === selectedCard) {
                         card.classList.add('selected-wrong');
@@ -1080,7 +1256,6 @@
                         card.classList.add('wrong');
                     }
                 });
-
                 setTimeout(() => {
                     if (currentQuestion < gameQuestions.length - 1) {
                         document.getElementById('nextButton').style.display = 'block';
@@ -1093,175 +1268,244 @@
 
         function nextQuestion() {
             currentQuestion++;
-
-            const allOptions = document.querySelectorAll('.option-card');
-            allOptions.forEach(card => {
-                card.classList.remove('correct', 'wrong', 'selected-wrong');
-                card.style.pointerEvents = 'auto';
-            });
-
-            loadQuestion();
+            // Check if game should end
+             if (currentQuestion >= gameQuestions.length) {
+                 completeGame();
+             } else {
+                 loadQuestion(); // Load the next question
+             }
         }
 
-        function completeGame() {
-            if (currentStudentSeat && studentProgress[currentStudentSeat]) { // Check if student entry exists
-                studentProgress[currentStudentSeat].completed = true;
-                studentProgress[currentStudentSeat].score = score; // Update final score
-                studentProgress[currentStudentSeat].completedAt = new Date().toISOString();
-                localStorage.setItem('studentProgress', JSON.stringify(studentProgress));
-            } else if (currentStudentSeat) { // If entry didn't exist, create it now
-                 studentProgress[currentStudentSeat] = {
+         function completeGame() {
+            // Save progress
+            if (currentStudentSeat !== null) {
+                 const attemptQuestions = gameQuestions.map((q, index) => ({
+                     word: q.name,
+                     correct: currentAttemptCorrectness[index] === true // Use recorded correctness
+                 }));
+
+                studentProgress[currentStudentSeat] = {
                     completed: true,
                     score: score,
                     totalQuestions: gameQuestions.length,
                     completedAt: new Date().toISOString(),
-                     // questions array should have been populated during selections
-                    questions: studentProgress[currentStudentSeat]?.questions || [] // Use existing if somehow populated, else empty
-                 };
+                    questions: attemptQuestions // Store questions with tracked correctness
+                };
                 localStorage.setItem('studentProgress', JSON.stringify(studentProgress));
             }
 
+            // Update final dot visually
+             const dots = document.querySelectorAll('.progress-dot');
+             dots.forEach(dot => dot.classList.add('completed')); // Mark all as completed
 
-            updateDotProgress(); // Ensure the last dot is updated
-
+            // Show completion screen
             setTimeout(() => {
-                const dots = document.querySelectorAll('.progress-dot');
-                dots.forEach(dot => dot.classList.add('completed')); // Mark all as completed visually
-
                 document.getElementById('gameArea').style.display = 'none';
-                document.getElementById('nextButton').style.display = 'none';
-                document.getElementById('scoreDisplay').textContent = `${currentStudentSeat}號同學答對了 ${gameQuestions.length} 題中的 ${score} 題！`;
+                document.getElementById('gameHeader').style.display = 'none';
+                document.getElementById('scoreDisplay').textContent = `${currentStudentSeat}號同學 答對了 ${gameQuestions.length} 題中的 ${score} 題！`;
                 document.getElementById('completionScreen').style.display = 'block';
-            }, 1000);
+            }, 1000); // Wait after last question feedback
         }
 
-
         function backToSeatSelection() {
+            // Hide all game/result screens
             document.getElementById('gameArea').style.display = 'none';
             document.getElementById('gameHeader').style.display = 'none';
             document.getElementById('completionScreen').style.display = 'none';
             document.getElementById('analysisScreen').style.display = 'none';
+            // Show seat selection
             document.getElementById('seatSelectionScreen').style.display = 'block';
-            initSeatSelection();
+            initSeatSelection(); // Refresh seat statuses
         }
 
         function showAnalysis() {
             document.getElementById('seatSelectionScreen').style.display = 'none';
+            // Ensure other screens are hidden
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('gameHeader').style.display = 'none';
+            document.getElementById('completionScreen').style.display = 'none';
+            // Show analysis
             document.getElementById('analysisScreen').style.display = 'block';
-            generateAnalysisReport();
+            generateAnalysisReport(); // Generate the report content
         }
 
+         // --- generateAnalysisReport Function (with previous card layout & score display fixes) ---
         function generateAnalysisReport() {
-            const analysisContent = document.getElementById('analysisContent');
-            const completedStudents = Object.keys(studentProgress).filter(seat => studentProgress[seat] && studentProgress[seat].completed); // Added check for existence
-            const numCompleted = completedStudents.length;
+            const analysisContentWrapper = document.getElementById('analysisContent');
+            analysisContentWrapper.innerHTML = ''; // Clear previous content
+
+            const completedStudents = Object.keys(studentProgress).filter(seat => studentProgress[seat] && studentProgress[seat].completed);
+            const totalStudentsCount = 25; // Keep for reference if needed elsewhere, but don't display directly
+            const completedCount = completedStudents.length;
 
             let totalScore = 0;
-            const missedWordCounts = {};
-            let totalQuestionsAttemptedByCompleted = 0;
+            const wordErrorStats = {}; // { wordName: { attempts: 0, errors: 0 } }
+
+            completedStudents.forEach(seat => {
+                const progress = studentProgress[seat];
+                 if (typeof progress.score === 'number') { // Check if score is valid
+                    totalScore += progress.score;
+                 }
 
 
-           completedStudents.forEach(seat => {
-              const studentData = studentProgress[seat];
-              totalScore += studentData.score;
-               if (studentData.questions && Array.isArray(studentData.questions)) {
-                  studentData.questions.forEach(q => {
-                       totalQuestionsAttemptedByCompleted++; // Count each question attempt
-                       if (q && !q.correct) { // Add check if q exists
-                            missedWordCounts[q.word] = (missedWordCounts[q.word] || 0) + 1;
-                       }
-                  });
-               }
-           });
+                // Aggregate word errors ONLY from completed students
+                 if (progress.questions && Array.isArray(progress.questions)) {
+                     progress.questions.forEach((q) => {
+                         if (!q || !q.word) return; // Skip invalid question data
+                         if (!wordErrorStats[q.word]) {
+                             wordErrorStats[q.word] = { attempts: 0, errors: 0 };
+                         }
+                         wordErrorStats[q.word].attempts++;
+                         // Use the stored 'correct' flag
+                         if (q.correct === false) { // Explicitly check for false
+                             wordErrorStats[q.word].errors++;
+                         }
+                     });
+                 }
+            });
 
+            // Calculate average score based *only* on completed students
+            const averageScorePercent = completedCount > 0
+                ? Math.round((totalScore / (completedCount * gameQuestions.length)) * 100) // Use actual number of questions
+                : 0;
 
-            const averageScore = numCompleted > 0 ? (totalScore / numCompleted) : 0;
-            // Convert average score out of 5 to percentage score out of 100
-             const averageScorePercent = numCompleted > 0 ? Math.round((averageScore / 5) * 100) : 0;
-
-
-            let overallStatusText = '再接再厲';
-            let statusClass = 'status-needs-improvement'; // CSS class for styling
-            if (averageScorePercent >= 80) {
-                overallStatusText = '表現優異';
-                statusClass = 'status-excellent';
-            } else if (averageScorePercent >= 60) {
-                overallStatusText = '表現良好';
-                statusClass = 'status-good';
+            let learningStatusText = '尚無資料';
+            if (completedCount > 0) {
+                if (averageScorePercent >= 80) {
+                    learningStatusText = '表現優異';
+                } else if (averageScorePercent >= 60) {
+                    learningStatusText = '表現良好';
+                } else {
+                    learningStatusText = '再接再厲';
+                }
             }
 
-            // --- Calculate Commonly Missed Words ---
-            const commonlyMissedWords = [];
-             if (numCompleted > 0) { // Only calculate if someone completed
-               for (const word in missedWordCounts) {
-                    const missRate = (missedWordCounts[word] / numCompleted); // Calculate miss rate based on completed students
-                    if (missRate >= 0.5) {
-                         commonlyMissedWords.push(word);
-                    }
-               }
-             }
-
-             let missedWordsHtml = '<p>無特別容易答錯的語詞。</p>';
-             if (commonlyMissedWords.length > 0) {
-                 missedWordsHtml = '<div class="missed-word-list">'; // Changed ul to div
-                 commonlyMissedWords.forEach(word => {
-                      missedWordsHtml += `<span class="missed-word-item">${word}</span>`; // Changed li to span
-                 });
-                 missedWordsHtml += '</div>'; // Changed ul to div
-             }
+            // Find words with >= 50% error rate among completed students' attempts
+             const highErrorWords = Object.entries(wordErrorStats)
+                .filter(([word, stats]) => stats.attempts > 0 && (stats.errors / stats.attempts) >= 0.5)
+                .map(([word, stats]) => word); // Get only the word name
 
 
-            analysisContent.innerHTML = `
-                <div class="analysis-section">
-                    <h3>📈 整體表現概況</h3>
-                    <p><strong>已完成人數：</strong>${numCompleted}人</p>
-                    <p><strong>全班學習狀況：</strong>
-                        <span class="status-text-large ${statusClass}">${overallStatusText}</span>
-                         (平均答對 ${averageScore.toFixed(1)} / 5 題)
-                     </p>
-                    <p><strong>測驗日期：</strong>${new Date().toLocaleDateString('zh-TW')}</p>
-                </div>
+            // --- Build HTML using Card Structure ---
 
-                <div class="analysis-section">
-                     <h3>⚠️ 較易答錯語詞</h3>
-                     ${missedWordsHtml}
-                </div>
-
-                <div class="analysis-section">
-                    <h3>📝 教學建議</h3>
-                    <ul style="text-align: left; padding-left: 20px;">
-                        <li>${commonlyMissedWords.length > 0 ? `針對「${commonlyMissedWords.join('」、「')}」等語詞可加強複習。` : '整體表現不錯，可持續鼓勵。'}</li>
-                        <li>依據班級整體學習狀況 (<span class="${statusClass}" style="font-weight:bold;">${overallStatusText}</span>)，調整後續教學活動。</li>
-                        <li>若${overallStatusText === '再接再厲' ? '學生普遍需要加強' : overallStatusText === '表現良好' ? '部分學生尚有進步空間' : '可考慮'}，可增加圖卡配對、念謠等互動遊戲${overallStatusText === '表現優異' ? '或嘗試引入更複雜的語詞、短句練習' : ''}。</li>
-                    </ul>
-                </div>
+            // 1. Overall Status Card
+            const overallCard = document.createElement('div');
+            overallCard.className = 'analysis-card';
+            overallCard.innerHTML = `
+                <h3>📈 整體概況</h3>
+                <p><strong>已完成人數：</strong> ${completedCount} 人</p>
+                <p><strong>全班學習狀況：</strong> ${learningStatusText}</p>
+                <p><strong>報告日期：</strong> ${new Date().toLocaleDateString('zh-TW')}</p>
             `;
+            analysisContentWrapper.appendChild(overallCard);
+
+            // 2. Statistics Card (Container for two smaller cards)
+            const statsCardContainer = document.createElement('div');
+            statsCardContainer.className = 'analysis-card'; // Outer card shell
+             statsCardContainer.innerHTML = `<h3>📊 統計數據</h3>`; // Title for the stats section
+
+             const statsContainerInner = document.createElement('div');
+             statsContainerInner.className = 'stats-container'; // Flex container
+
+             // Left Stat Card
+            const completedStatCard = document.createElement('div');
+            completedStatCard.className = 'stat-card';
+            completedStatCard.innerHTML = `
+                <div class="stat-card-title">已完成人數</div>
+                <div class="stat-card-value">${completedCount}</div>
+            `;
+             statsContainerInner.appendChild(completedStatCard);
+
+            // Right Stat Card
+            const statusStatCard = document.createElement('div');
+            statusStatCard.className = 'stat-card';
+            statusStatCard.innerHTML = `
+                <div class="stat-card-title">全班學習狀況</div>
+                <div class="stat-card-value">${learningStatusText}</div>
+            `;
+            statsContainerInner.appendChild(statusStatCard);
+
+            statsCardContainer.appendChild(statsContainerInner); // Add inner container to the card
+            analysisContentWrapper.appendChild(statsCardContainer); // Add the whole stats card
+
+
+            // 3. High Error Words Card (Conditional)
+             const errorWordsCard = document.createElement('div'); // Create card regardless
+             errorWordsCard.className = 'analysis-card';
+             let errorWordsContent = '';
+
+             if (completedCount > 0) { // Check if data exists
+                 if (highErrorWords.length > 0) {
+                     errorWordsContent = `
+                         <div class="error-words-grid">
+                             ${highErrorWords.map(word => `<div class="error-word-item">${word}</div>`).join('')}
+                         </div>`;
+                 } else {
+                     errorWordsContent = '<p>全班在此次測驗中均表現良好，沒有答錯率偏高的語詞！</p>';
+                 }
+             } else {
+                  errorWordsContent = '<p>尚無學生完成測驗，無法分析。</p>';
+             }
+
+             errorWordsCard.innerHTML = `
+                <h3>⚠️ 待加強語詞</h3>
+                ${errorWordsContent}
+             `;
+             analysisContentWrapper.appendChild(errorWordsCard);
+
+
+            // 4. Suggestions Card
+            const suggestionsCard = document.createElement('div');
+            suggestionsCard.className = 'analysis-card';
+            suggestionsCard.innerHTML = `
+                <h3>📝 教學建議</h3>
+                <ul class="suggestion-list">
+                    <li>針對答錯率較高的語詞，可設計額外加強活動。</li>
+                    <li>若整體狀況為「再接再厲」，建議安排複習課程或調整教學步調。</li>
+                    <li>可以利用圖卡配對、賓果遊戲等方式增加趣味性。</li>
+                    <li>鼓勵「表現優異」的同學擔任小老師，協助其他同學。</li>
+                    <li>觀察學生作答狀況，了解是拼音問題還是識圖問題。</li>
+                </ul>
+            `;
+            analysisContentWrapper.appendChild(suggestionsCard);
         }
+         // --- END of Analysis Function ---
 
 
         function resetAllProgress() {
-            // Using a simple confirm, replace with modal if needed in restricted environments
+            // Use a confirmation dialog (replace window.confirm in production)
             if (window.confirm('確定要重置全班進度嗎？此操作無法復原。')) {
                 localStorage.removeItem('studentProgress');
-                studentProgress = {};
-                initSeatSelection();
-                // Optionally show a confirmation message
-                 alert('全班進度已重置。'); // Replace alert if needed
+                studentProgress = {}; // Reset in-memory data
+                initSeatSelection(); // Refresh the seat selection screen
+                // Consider adding a subtle visual feedback message instead of alert
             }
         }
 
-
         function openExportModal() {
-            document.getElementById('exportModal').style.display = 'flex';
-            document.getElementById('exportSchoolName').value = '';
+             const modal = document.getElementById('exportModal');
+             modal.style.display = 'flex'; // Show overlay
+             // Use setTimeout to allow the display change to render before adding 'visible'
+             setTimeout(() => {
+                 modal.classList.add('visible');
+             }, 10); // Small delay
+
+            document.getElementById('exportSchoolName').value = ''; // Clear fields
             document.getElementById('exportClassName').value = '';
+            // Clear any previous error states
             document.getElementById('exportSchoolName').style.borderColor = '';
             document.getElementById('exportClassName').style.borderColor = '';
         }
 
         function closeExportModal() {
-            document.getElementById('exportModal').style.display = 'none';
+             const modal = document.getElementById('exportModal');
+             modal.classList.remove('visible');
+             // Wait for transition to finish before setting display: none
+             modal.addEventListener('transitionend', () => {
+                 modal.style.display = 'none';
+             }, { once: true }); // Ensure listener is removed after firing once
         }
+
 
         function exportAnalysis(format) {
             const schoolNameInput = document.getElementById('exportSchoolName');
@@ -1269,137 +1513,122 @@
             const schoolName = schoolNameInput.value.trim();
             const className = classNameInput.value.trim();
 
-            schoolNameInput.style.borderColor = '';
-            classNameInput.style.borderColor = '';
-
+            // Simple validation
             let hasError = false;
             if (!schoolName) {
-                schoolNameInput.style.borderColor = 'red';
-                hasError = true;
-            }
-            if (!className) {
-                classNameInput.style.borderColor = 'red';
-                hasError = true;
-            }
-            if (hasError) {
-                return;
-            }
+                schoolNameInput.style.borderColor = 'red'; hasError = true;
+            } else { schoolNameInput.style.borderColor = ''; }
+             if (!className) {
+                classNameInput.style.borderColor = 'red'; hasError = true;
+            } else { classNameInput.style.borderColor = ''; }
+            if (hasError) return;
 
             closeExportModal();
 
-            const analysisContent = document.getElementById('analysisContent');
+            const analysisContentElement = document.getElementById('analysisContent');
             const loadingOverlay = document.getElementById('loadingOverlay');
             loadingOverlay.style.display = 'flex';
 
+             // Temporarily add a header for the export
             const reportHeader = document.createElement('div');
             reportHeader.className = 'report-header';
             reportHeader.innerHTML = `<h2>${schoolName}</h2><p>${className} - 注音配對遊戲學習分析報告</p>`;
+            analysisContentElement.prepend(reportHeader);
 
-             // Temporarily prepend header for capture
-            analysisContent.prepend(reportHeader);
 
-            // Use timeout to ensure styles are applied before capture
-            setTimeout(() => {
-                 html2canvas(analysisContent, { scale: 2, useCORS: true, logging: true }).then(canvas => {
-                     // Remove header immediately after capture starts processing
-                     if (analysisContent.contains(reportHeader)) {
-                          analysisContent.removeChild(reportHeader);
-                     }
+            // Use html2canvas
+            html2canvas(analysisContentElement, {
+                 scale: 2, useCORS: true, backgroundColor: '#F0F4F8'
+             }).then(canvas => {
+                const filenameBase = `${schoolName}-${className}-學習報告`;
 
-                    if (format === 'pdf') {
-                        const { jsPDF } = window.jspdf;
-                        const imgData = canvas.toDataURL('image/png');
-                        const pdf = new jsPDF('p', 'mm', 'a4');
-                        const pdfWidth = pdf.internal.pageSize.getWidth();
-                        const pdfHeight = pdf.internal.pageSize.getHeight();
-                        const margin = 10;
-                        const contentWidth = pdfWidth - margin * 2;
-                        const canvasAspectRatio = canvas.height / canvas.width;
-                        const contentHeight = contentWidth * canvasAspectRatio;
+                if (format === 'pdf') {
+                    const { jsPDF } = window.jspdf;
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const pdfWidth = pdf.internal.pageSize.getWidth();
+                    const pdfHeight = pdf.internal.pageSize.getHeight();
+                    const margin = 10;
+                    const contentWidth = pdfWidth - margin * 2;
+                    const canvasAspectRatio = canvas.height / canvas.width;
+                    const contentHeight = contentWidth * canvasAspectRatio;
+                    let pageHeight = pdfHeight - margin * 2;
+                    let heightLeft = contentHeight;
+                    let position = margin;
 
-                        let heightLeft = contentHeight;
-                        let position = margin;
-
-                        // Add the first page/part
+                    pdf.addImage(imgData, 'PNG', margin, position, contentWidth, contentHeight);
+                    heightLeft -= pageHeight;
+                    while (heightLeft > 0) {
+                        position = heightLeft - contentHeight + margin;
+                        pdf.addPage();
                         pdf.addImage(imgData, 'PNG', margin, position, contentWidth, contentHeight);
-                        heightLeft -= (pdfHeight - margin * 2);
-
-                        // Add subsequent pages if needed
-                        while (heightLeft > 0) {
-                            position = margin - heightLeft; // Negative position shifts the image up
-                            pdf.addPage();
-                            pdf.addImage(imgData, 'PNG', margin, position, contentWidth, contentHeight);
-                            heightLeft -= (pdfHeight - margin * 2);
-                        }
-
-                        pdf.save(`${schoolName}-${className}-學習報告.pdf`);
-                    } else if (format === 'png') {
-                        const link = document.createElement('a');
-                        link.download = `${schoolName}-${className}-學習報告.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
+                        heightLeft -= pageHeight;
                     }
+                    pdf.save(`${filenameBase}.pdf`);
+                } else if (format === 'png') {
+                    const link = document.createElement('a');
+                    link.download = `${filenameBase}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }
 
-                    loadingOverlay.style.display = 'none';
-                 }).catch(err => {
-                     console.error("匯出失敗:", err);
-                     // Ensure header is removed even on error
-                     if (analysisContent.contains(reportHeader)) {
-                         analysisContent.removeChild(reportHeader);
-                     }
-                     loadingOverlay.style.display = 'none';
-                      // Consider showing an error message to the user
-                      alert('報告匯出失敗，請稍後再試。'); // Replace alert if needed
-                 });
-            }, 100); // Small delay to help rendering
+                analysisContentElement.removeChild(reportHeader);
+                loadingOverlay.style.display = 'none';
+
+            }).catch(err => {
+                console.error("匯出失敗:", err);
+                if (analysisContentElement.contains(reportHeader)) {
+                    analysisContentElement.removeChild(reportHeader);
+                }
+                loadingOverlay.style.display = 'none';
+                 // Inform user of failure (replace alert)
+                 alert('報告匯出失敗，請稍後再試。'); // Replace alert with a better UI element
+            });
         }
 
-
+        // Fullscreen Toggle Logic
         function toggleFullScreen() {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                const el = document.documentElement;
-                if (el.requestFullscreen) {
-                    el.requestFullscreen();
-                } else if (el.webkitRequestFullscreen) { /* Safari */
-                    el.webkitRequestFullscreen();
-                }
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { /* Safari */
-                    document.webkitExitFullscreen();
-                }
-            }
-        }
+             const doc = window.document;
+             const docEl = doc.documentElement;
+             const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+             const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+             const isFullscreen = !(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement);
+
+             if (!isFullscreen) {
+               if (requestFullScreen) requestFullScreen.call(docEl);
+             } else {
+                if (cancelFullScreen) cancelFullScreen.call(doc);
+             }
+         }
 
         function updateFullscreenIcon() {
             const enterIcon = document.getElementById('enterFsIcon');
             const exitIcon = document.getElementById('exitFsIcon');
-             // Add null checks for icons
-             if (!enterIcon || !exitIcon) return;
-
-            if (document.fullscreenElement || document.webkitFullscreenElement) {
-                enterIcon.style.display = 'none';
-                exitIcon.style.display = 'block';
+             // Check across browsers
+            const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+            if (isFullscreen) {
+                if(enterIcon) enterIcon.style.display = 'none';
+                if(exitIcon) exitIcon.style.display = 'block';
             } else {
-                enterIcon.style.display = 'block';
-                exitIcon.style.display = 'none';
+                if(enterIcon) enterIcon.style.display = 'block';
+                if(exitIcon) exitIcon.style.display = 'none';
             }
         }
 
+
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             initSeatSelection();
-
-            // Disable right-click context menu
             document.addEventListener('contextmenu', event => event.preventDefault());
-
             const fullscreenBtn = document.getElementById('fullscreenBtn');
-             if (fullscreenBtn) { // Add null check
-                 fullscreenBtn.addEventListener('click', toggleFullScreen);
-             }
-            document.addEventListener('fullscreenchange', updateFullscreenIcon);
-            document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+            if (fullscreenBtn) fullscreenBtn.addEventListener('click', toggleFullScreen);
+             document.addEventListener('fullscreenchange', updateFullscreenIcon);
+             document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+             document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+             document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
+             updateFullscreenIcon(); // Set initial state
         });
+
     </script>
 </body>
 </html>
