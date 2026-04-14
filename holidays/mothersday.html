@@ -154,7 +154,7 @@
     </main>
 
     <script>
-        // 定義遊戲可選的物品 (新增小熊、蛋糕)
+        // 定義遊戲可選的物品
         const ITEM_TYPES = [
             { id: 'heart', emoji: '💖', name: '愛心' },
             { id: 'flower', emoji: '🌸', name: '花朵' },
@@ -164,7 +164,6 @@
         ];
 
         // 全域設定
-        const FIXED_TARGET_COUNT = 5; // 每次固定找 5 個，確保雙方數量公平
         const TOTAL_ITEMS_ON_SCREEN = 12; // 降低畫面總數量，避免太密集
         const ACTIVE_TARGETS = { left: null, right: null }; // 記錄雙方目前的題目，避免重複
 
@@ -174,9 +173,10 @@
                 this.prefix = sidePrefix; // 'left' 或 'right'
                 this.themeColor = themeColor;
                 this.targetItem = null;
-                this.targetCount = FIXED_TARGET_COUNT;
+                this.targetCount = 0;
                 this.currentCount = 0;
                 this.totalItemsOnScreen = TOTAL_ITEMS_ON_SCREEN;
+                this.isPlaying = false; // 追蹤此側是否正在遊戲中
 
                 // 綁定 DOM 元素
                 this.taskTextEl = document.getElementById(`${sidePrefix}-task-text`);
@@ -190,8 +190,18 @@
                 this.winScreenEl.classList.add('hidden');
                 this.playAreaEl.innerHTML = '';
                 this.currentCount = 0;
+                this.isPlaying = true; // 標記為正在遊戲中
 
-                // 2. 決定目標物品：過濾掉另一半正在尋找的物品，確保圖案不同
+                // 2. 決定目標數量 (3~6個)
+                // 檢查另一側是否正在遊戲中，如果是，則使用與另一側相同的數量以保持公平；如果不是，則重新隨機產生
+                const otherGame = this.prefix === 'left' ? rightGame : leftGame;
+                if (otherGame && otherGame.isPlaying) {
+                    this.targetCount = otherGame.targetCount; // 同步另一側的數量
+                } else {
+                    this.targetCount = Math.floor(Math.random() * 4) + 3; // 隨機 3 到 6 之間
+                }
+
+                // 3. 決定目標物品：過濾掉另一半正在尋找的物品，確保雙方找的圖案不同
                 const otherSide = this.prefix === 'left' ? 'right' : 'left';
                 let availableItems = ITEM_TYPES.filter(item => item.id !== ACTIVE_TARGETS[otherSide]);
                 this.targetItem = availableItems[Math.floor(Math.random() * availableItems.length)];
@@ -199,11 +209,11 @@
                 // 記錄目前這側正在找的物品
                 ACTIVE_TARGETS[this.prefix] = this.targetItem.id;
 
-                // 3. 更新UI文字
+                // 4. 更新UI文字
                 this.taskTextEl.innerHTML = `請找出 <span class="text-5xl mx-2 text-${this.themeColor}-600">${this.targetCount}</span> 個 <span class="text-5xl mx-2">${this.targetItem.emoji}</span> ${this.targetItem.name}`;
                 this.updateProgress();
 
-                // 4. 準備要顯示的所有物品陣列
+                // 5. 準備要顯示的所有物品陣列
                 let itemsToSpawn = [];
                 // 放入目標物品
                 for(let i=0; i<this.targetCount; i++) {
@@ -216,10 +226,10 @@
                     itemsToSpawn.push(randomDistractor);
                 }
 
-                // 5. 打亂物品順序
+                // 6. 打亂物品順序
                 itemsToSpawn = this.shuffleArray(itemsToSpawn);
 
-                // 6. 將物品分配到 3 個直行中 (減少欄數，讓水平空間變大，不密集)
+                // 7. 將物品分配到 3 個直行中 (減少欄數，讓水平空間變大，不密集)
                 const cols = 3;
                 const cellWidth = 100 / cols;
 
@@ -293,6 +303,7 @@
             showWinScreen() {
                 // 過關時清空目前的目標紀錄，讓下一局可以重新分配
                 ACTIVE_TARGETS[this.prefix] = null;
+                this.isPlaying = false; // 標記為不在遊戲中 (已過關)
                 this.winScreenEl.classList.remove('hidden');
             }
 
