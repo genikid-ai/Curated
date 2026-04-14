@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>母親節快樂！親子闖關大挑戰</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 禁止選取與觸控預設行為，適合大型觸控螢幕 */
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+            background-color: #fdf2f8; /* 淺粉紅背景 */
+        }
+
+        /* 由下往上的移動動畫 */
+        @keyframes riseUp {
+            0% { top: 110%; }
+            100% { top: -20%; }
+        }
+        .item-wrapper {
+            position: absolute;
+            animation-name: riseUp;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            width: 120px;
+            height: 120px;
+        }
+
+        /* 點擊正確的特效 */
+        @keyframes popOut {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+        .pop-out {
+            animation: popOut 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        /* 點擊錯誤的震動特效 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+        .shake-error {
+            animation: shake 0.4s;
+        }
+
+        /* 過關勝利的跳動特效 */
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        .win-animate {
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* 觸控物件樣式 */
+        .game-item {
+            width: 100%;
+            height: 100%;
+            font-size: 6rem; /* 在65吋螢幕上會非常大且清晰 */
+            cursor: pointer;
+            filter: drop-shadow(0px 8px 8px rgba(0,0,0,0.15));
+            transition: filter 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-item:active {
+            filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.2));
+        }
+
+        /* 標題漸層 */
+        .title-gradient {
+            background: linear-gradient(to right, #ec4899, #f43f5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" class="h-screen w-screen flex flex-col">
+
+    <!-- 全螢幕按鈕 -->
+    <button id="fullscreen-btn" onclick="toggleFullScreen()" class="absolute top-4 right-6 z-50 bg-white/90 p-3 rounded-full shadow-lg border-4 border-pink-200 active:scale-95 transition-transform flex items-center justify-center hover:bg-pink-50">
+        <!-- 進入全螢幕圖示 -->
+        <svg id="fs-enter-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-pink-500">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8V4m0 0h4M3 4l5 5m13-1v-4m0 0h-4m4 0l-5 5M3 16v4m0 0h4m-4 0l5-5m13 1v4m0 0h-4m4 0l-5-5" />
+        </svg>
+        <!-- 退出全螢幕圖示 (預設隱藏) -->
+        <svg id="fs-exit-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8 text-pink-500 hidden">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 4v4m0 0H5m4 0L4 3m11 1v4m0 0h4m-4 0l5-5M9 20v-4m0 0H5m4 0l-5 5m11-1v-4m0 0h4m-4 0l5 5" />
+        </svg>
+    </button>
+
+    <!-- 頂部共用標題 -->
+    <header class="h-20 bg-white shadow-md flex items-center justify-center z-10 border-b-4 border-pink-200 shrink-0">
+        <h1 class="text-4xl font-extrabold title-gradient flex items-center gap-4">
+            <span>🌸</span> 母親節快樂！親子闖關大挑戰 <span>🎁</span>
+        </h1>
+    </header>
+
+    <!-- 遊戲主區域 (左右分割) -->
+    <main class="flex-1 flex w-full relative">
+        
+        <!-- 左側玩家 -->
+        <div id="left-player" class="w-1/2 h-full border-r-8 border-pink-300 relative flex flex-col bg-rose-50">
+            <!-- 任務提示區 -->
+            <div class="h-28 bg-white/60 m-4 rounded-3xl shadow-sm border-4 border-rose-200 flex flex-col items-center justify-center">
+                <div class="text-3xl font-bold text-gray-700" id="left-task-text">準備中...</div>
+                <div class="text-2xl font-bold text-rose-500 mt-2" id="left-progress-text">已找到: 0 / 0</div>
+            </div>
+            
+            <!-- 互動點擊區 -->
+            <div id="left-play-area" class="flex-1 relative w-full overflow-hidden"></div>
+
+            <!-- 過關畫面覆蓋層 -->
+            <div id="left-win-screen" class="hidden absolute inset-0 bg-white/85 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
+                <div class="text-9xl mb-6">🎉</div>
+                <h2 class="text-6xl font-bold text-rose-600 win-animate drop-shadow-md">太棒了！過關！</h2>
+                <button onclick="leftGame.init()" class="mt-12 px-10 py-5 bg-rose-500 text-white text-4xl font-bold rounded-full shadow-xl active:scale-95 transition-transform border-4 border-white">
+                    再玩一次 ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- 右側玩家 -->
+        <div id="right-player" class="w-1/2 h-full relative flex flex-col bg-pink-50">
+            <!-- 任務提示區 -->
+            <div class="h-28 bg-white/60 m-4 rounded-3xl shadow-sm border-4 border-pink-200 flex flex-col items-center justify-center">
+                <div class="text-3xl font-bold text-gray-700" id="right-task-text">準備中...</div>
+                <div class="text-2xl font-bold text-pink-500 mt-2" id="right-progress-text">已找到: 0 / 0</div>
+            </div>
+            
+            <!-- 互動點擊區 -->
+            <div id="right-play-area" class="flex-1 relative w-full overflow-hidden"></div>
+
+            <!-- 過關畫面覆蓋層 -->
+            <div id="right-win-screen" class="hidden absolute inset-0 bg-white/85 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
+                <div class="text-9xl mb-6">🏆</div>
+                <h2 class="text-6xl font-bold text-pink-600 win-animate drop-shadow-md">好厲害！過關！</h2>
+                <button onclick="rightGame.init()" class="mt-12 px-10 py-5 bg-pink-500 text-white text-4xl font-bold rounded-full shadow-xl active:scale-95 transition-transform border-4 border-white">
+                    再玩一次 ➔
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // 定義遊戲可選的物品 (新增小熊、蛋糕)
+        const ITEM_TYPES = [
+            { id: 'heart', emoji: '💖', name: '愛心' },
+            { id: 'flower', emoji: '🌸', name: '花朵' },
+            { id: 'gift', emoji: '🎁', name: '禮物' },
+            { id: 'bear', emoji: '🧸', name: '小熊' },
+            { id: 'cake', emoji: '🎂', name: '蛋糕' }
+        ];
+
+        // 全域設定
+        const FIXED_TARGET_COUNT = 5; // 每次固定找 5 個，確保雙方數量公平
+        const TOTAL_ITEMS_ON_SCREEN = 12; // 降低畫面總數量，避免太密集
+        const ACTIVE_TARGETS = { left: null, right: null }; // 記錄雙方目前的題目，避免重複
+
+        // 獨立掌管單側遊戲邏輯的類別
+        class SideGame {
+            constructor(sidePrefix, themeColor) {
+                this.prefix = sidePrefix; // 'left' 或 'right'
+                this.themeColor = themeColor;
+                this.targetItem = null;
+                this.targetCount = FIXED_TARGET_COUNT;
+                this.currentCount = 0;
+                this.totalItemsOnScreen = TOTAL_ITEMS_ON_SCREEN;
+
+                // 綁定 DOM 元素
+                this.taskTextEl = document.getElementById(`${sidePrefix}-task-text`);
+                this.progressTextEl = document.getElementById(`${sidePrefix}-progress-text`);
+                this.playAreaEl = document.getElementById(`${sidePrefix}-play-area`);
+                this.winScreenEl = document.getElementById(`${sidePrefix}-win-screen`);
+            }
+
+            init() {
+                // 1. 隱藏過關畫面、清空區域
+                this.winScreenEl.classList.add('hidden');
+                this.playAreaEl.innerHTML = '';
+                this.currentCount = 0;
+
+                // 2. 決定目標物品：過濾掉另一半正在尋找的物品，確保圖案不同
+                const otherSide = this.prefix === 'left' ? 'right' : 'left';
+                let availableItems = ITEM_TYPES.filter(item => item.id !== ACTIVE_TARGETS[otherSide]);
+                this.targetItem = availableItems[Math.floor(Math.random() * availableItems.length)];
+                
+                // 記錄目前這側正在找的物品
+                ACTIVE_TARGETS[this.prefix] = this.targetItem.id;
+
+                // 3. 更新UI文字
+                this.taskTextEl.innerHTML = `請找出 <span class="text-5xl mx-2 text-${this.themeColor}-600">${this.targetCount}</span> 個 <span class="text-5xl mx-2">${this.targetItem.emoji}</span> ${this.targetItem.name}`;
+                this.updateProgress();
+
+                // 4. 準備要顯示的所有物品陣列
+                let itemsToSpawn = [];
+                // 放入目標物品
+                for(let i=0; i<this.targetCount; i++) {
+                    itemsToSpawn.push(this.targetItem);
+                }
+                // 放入干擾物品 (其他種類隨機)
+                let distractors = ITEM_TYPES.filter(item => item.id !== this.targetItem.id);
+                for(let i=0; i< (this.totalItemsOnScreen - this.targetCount); i++) {
+                    let randomDistractor = distractors[Math.floor(Math.random() * distractors.length)];
+                    itemsToSpawn.push(randomDistractor);
+                }
+
+                // 5. 打亂物品順序
+                itemsToSpawn = this.shuffleArray(itemsToSpawn);
+
+                // 6. 將物品分配到 3 個直行中 (減少欄數，讓水平空間變大，不密集)
+                const cols = 3;
+                const cellWidth = 100 / cols;
+
+                itemsToSpawn.forEach((item, index) => {
+                    // 計算目前所屬的直行
+                    const col = index % cols;
+
+                    // 在行內加入隨機水平偏移 (15% ~ 85%，避免切到邊緣)
+                    const offsetX = 15 + Math.random() * 70;
+
+                    const leftPercent = (col * cellWidth) + (offsetX * cellWidth / 100);
+
+                    this.createItemElement(item, leftPercent);
+                });
+            }
+
+            createItemElement(itemData, leftP) {
+                // 建立外層容器，負責由下往上的連續移動
+                const wrapper = document.createElement('div');
+                wrapper.className = 'item-wrapper';
+                wrapper.style.left = `calc(${leftP}% - 60px)`; // 置中補償
+                
+                // 設定隨機的上升速度 (拉長到 8秒 ~ 15秒)，讓物品在畫面上停留久一點，分布更鬆散
+                const duration = Math.random() * 7 + 8;
+                // 設定隨機的初始延遲(負數)，讓物品在遊戲開始時已經散佈在畫面不同高度
+                const delay = -(Math.random() * duration);
+                
+                wrapper.style.animationDuration = `${duration}s`;
+                wrapper.style.animationDelay = `${delay}s`;
+
+                // 建立內層互動元件，負責點擊與特效
+                const el = document.createElement('div');
+                el.className = 'game-item';
+                el.innerHTML = itemData.emoji;
+
+                // 觸控與點擊事件
+                el.addEventListener('pointerdown', (e) => {
+                    // 避免重複觸發
+                    if(el.classList.contains('pop-out')) return;
+
+                    if (itemData.id === this.targetItem.id) {
+                        // 點對了！
+                        el.classList.add('pop-out');
+                        this.currentCount++;
+                        this.updateProgress();
+
+                        // 檢查是否過關
+                        if (this.currentCount >= this.targetCount) {
+                            setTimeout(() => this.showWinScreen(), 500); // 稍微延遲讓動畫播完
+                        }
+                    } else {
+                        // 點錯了！給予震動回饋
+                        el.classList.remove('shake-error');
+                        // 觸發重繪以重置動畫
+                        void el.offsetWidth; 
+                        el.classList.add('shake-error');
+                    }
+                });
+
+                wrapper.appendChild(el);
+                this.playAreaEl.appendChild(wrapper);
+            }
+
+            updateProgress() {
+                this.progressTextEl.innerText = `已找到: ${this.currentCount} / ${this.targetCount}`;
+                if (this.currentCount >= this.targetCount) {
+                    this.progressTextEl.innerText = "⭐ 任務完成！ ⭐";
+                }
+            }
+
+            showWinScreen() {
+                // 過關時清空目前的目標紀錄，讓下一局可以重新分配
+                ACTIVE_TARGETS[this.prefix] = null;
+                this.winScreenEl.classList.remove('hidden');
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        }
+
+        // --- 全方位相容性全螢幕切換功能 ---
+        function toggleFullScreen() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+
+            // 支援各家瀏覽器全螢幕呼叫方法
+            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            // 檢查目前是否處於全螢幕狀態
+            const isFullscreen = doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+
+            if (!isFullscreen) {
+                if (requestFullScreen) {
+                    try {
+                        const promise = requestFullScreen.call(docEl);
+                        if (promise) {
+                            promise.catch(err => {
+                                console.warn(`全螢幕請求失敗或被阻擋: ${err.message}`);
+                            });
+                        }
+                    } catch (err) {
+                        console.warn(`全螢幕發生錯誤: ${err.message}`);
+                    }
+                } else {
+                    console.warn('您的裝置或瀏覽器不支援全螢幕 API');
+                }
+            } else {
+                if (cancelFullScreen) {
+                    cancelFullScreen.call(doc);
+                }
+            }
+        }
+
+        // 監聽所有瀏覽器的全螢幕狀態改變事件，以切換按鈕圖示
+        const handleFullscreenChange = () => {
+            const enterIcon = document.getElementById('fs-enter-icon');
+            const exitIcon = document.getElementById('fs-exit-icon');
+            const doc = window.document;
+            const isFullscreen = doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+            
+            if (isFullscreen) {
+                enterIcon.classList.add('hidden');
+                exitIcon.classList.remove('hidden');
+            } else {
+                enterIcon.classList.remove('hidden');
+                exitIcon.classList.add('hidden');
+            }
+        };
+
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+        // 初始化左右兩側遊戲實例
+        const leftGame = new SideGame('left', 'rose');
+        const rightGame = new SideGame('right', 'pink');
+
+        // 啟動遊戲
+        window.onload = () => {
+            leftGame.init();
+            rightGame.init();
+        };
+
+        // 防止多指觸控縮放畫面 (Safeguard)
+        document.addEventListener('touchmove', function (event) {
+            if (event.scale !== 1) { event.preventDefault(); }
+        }, { passive: false });
+    </script>
+</body>
+</html>
